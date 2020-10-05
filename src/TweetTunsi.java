@@ -18,7 +18,7 @@ public class TweetTunsi{
         /*without or deduced from writing that it has to has to be only this way*/
         table.put('\u0621', ' '); /*ء*/
         table.put('\u0623', 'e'); /*أ*/
-        table.put('\u0627', 'e'); /*ا*/
+        table.put('\u0627', 'ê'); /*ا*/
         table.put('\u0622', 'ê'); /*آ*/
         table.put('\u0649', 'ê'); /*ى*/
         table.put('\u0624', 'u'); /*ؤ*/
@@ -87,13 +87,11 @@ public class TweetTunsi{
             if(count > 0 && posPreviousConsonant !=-1)
             {
                previousConsonant = this.tweetOldTunsi[posPreviousConsonant];
-               harderLetters = (previousConsonant == '\u0642') || (previousConsonant == '\u068A') ||
-                        (previousConsonant == '\u062D') || (previousConsonant == '\u063A') ||
-                        (previousConsonant == '\u0639') || (previousConsonant == '\u0637') ||
-                        (previousConsonant == '\u0635') || (previousConsonant == '\u0631') ||
-                        (previousConsonant == '\u0638') || (previousConsonant == '\u0636') ||
-                        (previousConsonant == '\u0628') || (previousConsonant == '\u0645') ||
-                        (previousConsonant == '\u0646');
+               harderLetters = (previousConsonant == '\u062D') || (previousConsonant == '\u062E') ||
+                        (previousConsonant == '\u0631') || (previousConsonant == '\u0635') ||
+                        (previousConsonant == '\u0636') || (previousConsonant == '\u0637') ||
+                        (previousConsonant == '\u0638') || (previousConsonant == '\u0639') ||
+                        (previousConsonant == '\u063A') || (previousConsonant == '\u0642') ;
             }
 
             if(currentCharacter=='\u064E' && count>0)
@@ -218,7 +216,7 @@ public class TweetTunsi{
                }
                else if((currentCharacter == '\u0627' || currentCharacter == '\u0649') && harderLetters)
                {
-                   this.tweetModernTunsi[countModernTweet] = 'â';
+                   this.tweetModernTunsi[countModernTweet] = 'â'; 
                }
                else
                {
@@ -246,30 +244,46 @@ public class TweetTunsi{
             }
             countModernTweet++;
         }
-        /*delete redundancy*/
         String tweet = new String(this.tweetModernTunsi);
+        if(tweet.contains("  "))
+        {
+            tweet = tweet.replace("  ", " ");
+        }
+        if(tweet.contains("eu"))
+        {
+            tweet = tweet.replace("eu", "u");
+        }
+        /*delete redundancy*/
         if(tweet.contains("ee") || tweet.contains("eê") || tweet.contains("êe"))
         {
             tweet = tweet.replace("ee","ê");
             tweet = tweet.replace("eê","ê");
             tweet = tweet.replace("êe","ê");
         }
-        else if(tweet.contains("aa") || tweet.contains("aâ") || tweet.contains("âa"))
+        if(tweet.contains("aa") || tweet.contains("aâ") || tweet.contains("âa"))
         {
             tweet = tweet.replace("aa","â");
             tweet = tweet.replace("aâ","â");
             tweet = tweet.replace("âa","â");
         }
-        else if(tweet.contains("ii") || tweet.contains("îi") || tweet.contains("iî") || tweet.contains("\u0131\u0131"))
+        if(tweet.contains("ii") || tweet.contains("îi") || tweet.contains("iî") || tweet.contains("\u0131\u0131"))
         {
             tweet = tweet.replace("ii","î");
             tweet = tweet.replace("iî","î");
             tweet = tweet.replace("îi","î");
             tweet = tweet.replace("\u0131\u0131","\u0131");
         }
-        else if(tweet.contains("  "))
+        if(tweet.contains("uu") || tweet.contains("uû") || tweet.contains("ûu"))
         {
-            tweet = tweet.replace("  ", " ");
+            tweet = tweet.replace("uu","û");
+            tweet = tweet.replace("uû","û");
+            tweet = tweet.replace("ûu","û");
+        }
+        if(tweet.contains("oo") || tweet.contains("oô") || tweet.contains("ôo"))
+        {
+            tweet = tweet.replace("oo","ô");
+            tweet = tweet.replace("oô","ô");
+            tweet = tweet.replace("ôo","ô");
         }
         this.tweetModernTunsi = tweet.toCharArray();
     }
@@ -297,10 +311,13 @@ public class TweetTunsi{
         {
             for(int count1=current; (count1 >=current-2) && ((current-2)>=0); count1--)
             {
-                if(this.modernTunsiLetters.containsKey(tweetOldTunsi[count1]))
+                if(this.modernTunsiLetters.containsKey(tweetOldTunsi[count1]) && tweetOldTunsi[count1]!='\u0627' &&
+                tweetOldTunsi[count1]!='\u0649')
                 {
                     consonant=count1;
+                    break;
                 }
+
             }
         }
         return consonant;

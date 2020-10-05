@@ -1,2 +1,2 @@
 # Tunsi
- Tech-compatible alphabet for the Tunisian language, invented by Meriem Akin.
+ Tech-compatible alphabet for the Tunisian language based on Turkish and Greek, invented by Meriem Akin.

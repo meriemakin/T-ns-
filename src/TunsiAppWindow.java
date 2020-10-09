@@ -14,7 +14,7 @@ public class TunsiAppWindow extends JFrame {
     JTextArea textfieldOldTunsi;
     JTextArea textfieldModernTunsi;
     JButton transliterateButton;
-    
+
     public TunsiAppWindow() {
         this.getContentPane().setLayout(null);
         this.initWindow();
@@ -52,12 +52,15 @@ public class TunsiAppWindow extends JFrame {
 
     protected void initWindow()
     {
+        Font font = new Font("Default", Font.PLAIN, 20);
         textfieldOldTunsi = new JTextArea("اكتب هنا بلتونسي لقديم...");
+        textfieldOldTunsi.setFont(font);
         JScrollPane scrollTextFieldOldTunsi=new JScrollPane(textfieldOldTunsi);
         scrollTextFieldOldTunsi.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         textfieldOldTunsi.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         transliterateButton = new JButton("Transliterate");
-        textfieldModernTunsi = new JTextArea("Transliteratiion will be shown here, when you hit the \"Translitearte Button\"");
+        textfieldModernTunsi = new JTextArea("Transliteration will be shown here, when you hit the \"Transliterate Button\"");
+        textfieldModernTunsi.setFont(font);
         JScrollPane scrollTextFieldModernTunsi=new JScrollPane(textfieldModernTunsi);
         transliterateButton = new JButton("Transliterate");
         transliterateButton.addActionListener(new ActionListener()
@@ -71,7 +74,7 @@ public class TunsiAppWindow extends JFrame {
 
         int xOrigin = 5;
         int yOrigin = 10;
-        int widthTextFieldOldTunsi = 400;
+        int widthTextFieldOldTunsi = 440;
         int heightTextFieldOldTunsi = 200;
         int widthTextFieldModernTunsi = widthTextFieldOldTunsi;
         int heightTextFieldModernTunsi = heightTextFieldOldTunsi;

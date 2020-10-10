@@ -39,7 +39,7 @@ public class TextTunsi {
         table.put('\u0637', 't'); /*ط*/
         table.put('\u062A', 't'); /*ت*/
         table.put('\u0639', '\u03B1'); /*α-ع*/
-        table.put('\u063A', '\u03B3'); /*γ-غ*/
+        table.put('\u063A', '\u03B3'); /*γ-غ Here another possibility could be the hebrew letter U+05E8	*/
         table.put('\u0641', 'f'); /*ف*/
         table.put('\u0642', 'k'); /*ق*/
         table.put('\u0643', 'k'); /*ك*/
@@ -61,9 +61,9 @@ public class TextTunsi {
         return modernTunsiLetters;
     }
 
-    public void setTextOldTunsi(String tweet)
+    public void setTextOldTunsi(String text)
     {
-        char [] characters = tweet.toCharArray();
+        char [] characters = text.toCharArray();
         this.textOldTunsi = characters;
     }
 
@@ -73,16 +73,21 @@ public class TextTunsi {
     }
 
 
-    public void setTweetModernTunsi()
+    public void setTextModernTunsi()
     {
         this.textModernTunsi = new char[this.textOldTunsi.length];
-        int countModernTweet = 0;
+        int countModernText = 0;
         for(int count = 0; count<this.textOldTunsi.length; count++)
         {
             char currentCharacter = this.textOldTunsi[count];
             char previousConsonant;
             int posPreviousConsonant = searchConsonant(count);
             boolean harderLetters = false;
+            char previousCharacter = ' ';
+            if(count> 0)
+            {
+                previousCharacter = this.textOldTunsi[count-1];
+            }
             if(count > 0 && posPreviousConsonant !=-1)
             {
                previousConsonant = this.textOldTunsi[posPreviousConsonant];
@@ -97,11 +102,11 @@ public class TextTunsi {
             {
                 if(harderLetters)
                 {
-                   this.textModernTunsi[countModernTweet]='a';
+                   this.textModernTunsi[countModernText]='a';
                 }
                 else
                 {
-                   this.textModernTunsi[countModernTweet]='e';
+                   this.textModernTunsi[countModernText]='e';
                 }
 
             }
@@ -109,22 +114,22 @@ public class TextTunsi {
             {
                 if(harderLetters)
                 {
-                   this.textModernTunsi[countModernTweet]='o';
+                   this.textModernTunsi[countModernText]='o';
                 }
                 else
                 {
-                   this.textModernTunsi[countModernTweet]='u';
+                   this.textModernTunsi[countModernText]='u';
                 }
             }
             else if(currentCharacter=='\u0650' && count>0)
             {
                 if(harderLetters)
                 {
-                   this.textModernTunsi[countModernTweet]='\u0131';
+                   this.textModernTunsi[countModernText]='\u0131';
                 }
                 else
                 {
-                   this.textModernTunsi[countModernTweet]='i';
+                   this.textModernTunsi[countModernText]='i';
                 }
             }
             else if(currentCharacter=='\u0652' && count>0)
@@ -138,12 +143,12 @@ public class TextTunsi {
                 {
                     if(consonant != (count-1))
                     {
-                        this.textModernTunsi[countModernTweet]=this.textModernTunsi[countModernTweet-1];
-                        this.textModernTunsi[countModernTweet-1]=this.textModernTunsi[consonant];
+                        this.textModernTunsi[countModernText]=this.textModernTunsi[countModernText-1];
+                        this.textModernTunsi[countModernText-1]=this.textModernTunsi[consonant];
                     }
                     else
                     {
-                        this.textModernTunsi[countModernTweet]=this.textModernTunsi[consonant];
+                        this.textModernTunsi[countModernText]=this.textModernTunsi[consonant];
                     }
 
                 }
@@ -153,7 +158,7 @@ public class TextTunsi {
 
                if(currentCharacter == '\u064A' && (count<this.textOldTunsi.length-1) && count>0)
                {
-                   char charBefore = this.textModernTunsi[countModernTweet-1];
+                   char charBefore = this.textModernTunsi[countModernText-1];
                    boolean voyelBefore = (charBefore == 'a') || (charBefore == 'â') || (charBefore == 'e') ||
                            (charBefore == 'ê') || (charBefore == 'u') || (charBefore == 'û') || (charBefore == 'o') ||
                            (charBefore == 'ô');
@@ -163,23 +168,23 @@ public class TextTunsi {
                   {
                       if(harderLetters)
                       {
-                          this.textModernTunsi[countModernTweet] = '\u0131';
+                          this.textModernTunsi[countModernText] = '\u0131';
                           this.textModernTunsi = concatenate(this.textModernTunsi, 'î', count+1);
-                          countModernTweet++;
+                          countModernText++;
                       }
                       else
                       {
-                          this.textModernTunsi[countModernTweet] = 'î';
+                          this.textModernTunsi[countModernText] = 'î';
                       }
                   }
                   else
                   {
-                      this.textModernTunsi[countModernTweet]=this.modernTunsiLetters.get(currentCharacter);
+                      this.textModernTunsi[countModernText]=this.modernTunsiLetters.get(currentCharacter);
                   }
                }
                else if(currentCharacter == '\u064A' && (count==this.textOldTunsi.length-1))
                {
-                   char charBefore = this.textModernTunsi[countModernTweet-1];
+                   char charBefore = this.textModernTunsi[countModernText-1];
                    boolean voyelBefore = (charBefore == 'a') || (charBefore == 'â') || (charBefore == 'e') ||
                            (charBefore == 'ê') || (charBefore == 'u') || (charBefore == 'û') || (charBefore == 'o') ||
                            (charBefore == 'ô');
@@ -187,36 +192,87 @@ public class TextTunsi {
                    {
                        if(harderLetters)
                        {
-                           this.textModernTunsi[countModernTweet] = '\u0131';
+                           this.textModernTunsi[countModernText] = '\u0131';
                            this.textModernTunsi = concatenate(this.textModernTunsi, 'î', count+1);
-                           countModernTweet++;
+                           countModernText++;
                        }
                        else
                        {
-                           this.textModernTunsi[countModernTweet] = 'î';
+                           this.textModernTunsi[countModernText] = 'î';
                        }
                    }
                    else
                    {
-                       this.textModernTunsi[countModernTweet]=this.modernTunsiLetters.get(currentCharacter);
+                       this.textModernTunsi[countModernText]=this.modernTunsiLetters.get(currentCharacter);
                    }
 
                }
+               else if((currentCharacter == '\u0648') && (previousCharacter == ' '))
+               {
+                   this.textModernTunsi[countModernText]=this.modernTunsiLetters.get(currentCharacter);
+               }
+               else if(currentCharacter == '\u0648' && (count<this.textOldTunsi.length-1) && count>=0)
+                {
+                    char charBefore = this.textModernTunsi[countModernText-1];
+                    boolean voyelBefore = (charBefore == 'a') || (charBefore == 'â') || (charBefore == 'e') ||
+                            (charBefore == 'ê') || (charBefore == 'i') || (charBefore == 'î') || (charBefore == '\u0131');
+
+                    if((this.textOldTunsi[count+1] != '\u064F' && this.textOldTunsi[count+1] != '\u064E' &&
+                            this.textOldTunsi[count+1] != '\u0652' && this.textOldTunsi[count+1] != '\u0650' &&
+                            this.textOldTunsi[count+1] != '\u0651') || (voyelBefore == false))
+                    {
+                        if(harderLetters)
+                        {
+                            this.textModernTunsi[countModernText] = 'ô';
+                        }
+                        else
+                        {
+                            this.textModernTunsi[countModernText] = 'û';
+                        }
+                    }
+                    else
+                    {
+                        this.textModernTunsi[countModernText]=this.modernTunsiLetters.get(currentCharacter);
+                    }
+                }
+                else if(currentCharacter == '\u0648' && (count==this.textOldTunsi.length-1))
+                {
+                    char charBefore = this.textModernTunsi[countModernText-1];
+                    boolean voyelBefore = (charBefore == 'a') || (charBefore == 'â') || (charBefore == 'e') ||
+                            (charBefore == 'ê') || (charBefore == 'i') || (charBefore == 'î') || (charBefore == '\u0131');
+                    if(voyelBefore == false)
+                    {
+                        if(harderLetters)
+                        {
+                            this.textModernTunsi[countModernText] = 'ô';
+                        }
+                        else
+                        {
+                            this.textModernTunsi[countModernText] = 'û';
+                        }
+                    }
+                    else
+                    {
+                        this.textModernTunsi[countModernText]=this.modernTunsiLetters.get(currentCharacter);
+                    }
+
+                }
                else if(currentCharacter == '\u064F' && (count<this.textOldTunsi.length-1) && count>0)
                {
+
                    if((this.textOldTunsi[count+1] != '\u064F' && this.textOldTunsi[count+1] != '\u064E' &&
                            this.textOldTunsi[count+1] != '\u0652' && this.textOldTunsi[count+1] != '\u0650') &&
                            this.textOldTunsi[count+1] != '\u0651')
                    {
                        if(harderLetters)
                        {
-                           this.textModernTunsi[countModernTweet] = 'o';
+                           this.textModernTunsi[countModernText] = 'o';
                            this.textModernTunsi = concatenate(this.textModernTunsi, 'u', count+1);
-                           countModernTweet++;
+                           countModernText++;
                        }
                        else
                        {
-                           this.textModernTunsi[countModernTweet] = 'û';
+                           this.textModernTunsi[countModernText] = 'û';
                        }
 
                    }
@@ -225,98 +281,106 @@ public class TextTunsi {
                {
                    if(harderLetters)
                    {
-                       this.textModernTunsi[countModernTweet] = 'o';
+                       this.textModernTunsi[countModernText] = 'o';
                        this.textModernTunsi = concatenate(this.textModernTunsi, 'u', count+1);
-                       countModernTweet++;
+                       countModernText++;
                    }
                    else
                    {
-                       this.textModernTunsi[countModernTweet] = 'û';
+                       this.textModernTunsi[countModernText] = 'û';
                    }
                }
                else if((currentCharacter == '\u0627' || currentCharacter == '\u0649') && harderLetters)
                {
-                   this.textModernTunsi[countModernTweet] = 'â';
+                   this.textModernTunsi[countModernText] = 'â';
+               }
+               else if(currentCharacter == '\u0629' && (count< this.textOldTunsi.length-1) && this.textOldTunsi[count+1] == '\u0652')
+               {
+                   this.textModernTunsi[countModernText] = 't';
                }
                else
                {
-                  this.textModernTunsi[countModernTweet]=this.modernTunsiLetters.get(currentCharacter);
+                  this.textModernTunsi[countModernText]=this.modernTunsiLetters.get(currentCharacter);
                }
             }
             else
             {
               if(currentCharacter == '\u061F')
               {
-                  this.textModernTunsi[countModernTweet]='?';
+                  this.textModernTunsi[countModernText]='?';
               }
               else if(currentCharacter == '\u060C')
               {
-                 this.textModernTunsi[countModernTweet]=',';
+                 this.textModernTunsi[countModernText]=',';
               }
               else if(currentCharacter == '\u061B')
               {
-                  this.textModernTunsi[countModernTweet]=';';
+                  this.textModernTunsi[countModernText]=';';
               }
               else
               {
-                  this.textModernTunsi[countModernTweet]=currentCharacter;
+                  this.textModernTunsi[countModernText]=currentCharacter;
               }
             }
-            countModernTweet++;
+            countModernText++;
         }
-        String tweet = new String(this.textModernTunsi);
-        if(tweet.contains("  "))
+        String text = new String(this.textModernTunsi);
+        if(text.contains("  "))
         {
-            tweet = tweet.replace("  ", " ");
+            text = text.replace("  ", " ");
         }
-        if(tweet.contains("eu"))
+        if(text.contains("aê"))
         {
-            tweet = tweet.replace("eu", "u");
+            text = text.replace("aê", "ê");
+        }
+        if(text.contains("eu"))
+        {
+            text = text.replace("eu", "u");
         }
         /*delete redundancy*/
-        if(tweet.contains("ee") || tweet.contains("eê") || tweet.contains("êe"))
+        if(text.contains("ee") || text.contains("eê") || text.contains("êe"))
         {
-            tweet = tweet.replace("ee","ê");
-            tweet = tweet.replace("eê","ê");
-            tweet = tweet.replace("êe","ê");
+            text = text.replace("ee","ê");
+            text = text.replace("eê","ê");
+            text = text.replace("êe","ê");
         }
-        if(tweet.contains("aa") || tweet.contains("aâ") || tweet.contains("âa"))
+        if(text.contains("aa") || text.contains("aâ") || text.contains("âa"))
         {
-            tweet = tweet.replace("aa","â");
-            tweet = tweet.replace("aâ","â");
-            tweet = tweet.replace("âa","â");
+            text = text.replace("aa","â");
+            text = text.replace("aâ","â");
+            text = text.replace("âa","â");
         }
-        if(tweet.contains("ii") || tweet.contains("îi") || tweet.contains("iî") || tweet.contains("\u0131\u0131"))
+        if(text.contains("ii") || text.contains("îi") || text.contains("iî") || text.contains("\u0131\u0131"))
         {
-            tweet = tweet.replace("ii","î");
-            tweet = tweet.replace("iî","î");
-            tweet = tweet.replace("îi","î");
-            tweet = tweet.replace("\u0131\u0131","\u0131");
+            text = text.replace("ii","î");
+            text = text.replace("iî","î");
+            text = text.replace("îi","î");
+            text = text.replace("\u0131\u0131","\u0131");
         }
-        if(tweet.contains("uu") || tweet.contains("uû") || tweet.contains("ûu"))
+        if(text.contains("uu") || text.contains("uû") || text.contains("ûu"))
         {
-            tweet = tweet.replace("uu","û");
-            tweet = tweet.replace("uû","û");
-            tweet = tweet.replace("ûu","û");
+            text = text.replace("uu","û");
+            text = text.replace("uû","û");
+            text = text.replace("ûu","û");
         }
-        if(tweet.contains("oo") || tweet.contains("oô") || tweet.contains("ôo"))
+        if(text.contains("oo") || text.contains("oô") || text.contains("ôo"))
         {
-            tweet = tweet.replace("oo","ô");
-            tweet = tweet.replace("oô","ô");
-            tweet = tweet.replace("ôo","ô");
+            text = text.replace("oo","ô");
+            text = text.replace("oô","ô");
+            text = text.replace("ôo","ô");
         }
-        this.textModernTunsi = tweet.toCharArray();
+        this.textModernTunsi = text.toCharArray();
     }
 
-    public char[] concatenate(char[] tweet, char character, int position)
+    public char[] concatenate(char[] text, char character, int position)
     {
-        char[] newTweet = new char[tweet.length+1];
+        char[] newText = new char[text.length+1];
         for(int count=0; count<position; count++)
         {
-            newTweet[count] = tweet[count];
+            newText[count] = text[count];
         }
-        newTweet[position] = character;
-        return newTweet;
+        newText[position] = character;
+        return newText;
     }
 
     public char[] getTextModernTunsi()

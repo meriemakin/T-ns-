@@ -53,13 +53,13 @@ public class TunsiAppWindow extends JFrame {
     protected void initWindow()
     {
         Font font = new Font("Default", Font.PLAIN, 20);
-        textfieldOldTunsi = new JTextArea("اكتب هنا بلتونسي لقديم...");
+        textfieldOldTunsi = new JTextArea("أُمّي سيسي تُكنِس تُكنِس لقات فلَيِّس قالِت: \"آش نِشري بيه؟ آش نِشري بيه؟ زَعمَة نِشري قَدّيد نطَيِّب كُسكسي بنين لبنَيّتي؟\". أَيَّ مشات لِلزَزَّار وُ شرات قَدِّيد فاوَح وُ طَيّبِت كُسكسي زَيّنِتُ في تِبسي وُ حَطِّتُُ فوق طاولِةْ الكوجينَة.");
         textfieldOldTunsi.setFont(font);
         JScrollPane scrollTextFieldOldTunsi=new JScrollPane(textfieldOldTunsi);
         scrollTextFieldOldTunsi.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         textfieldOldTunsi.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         transliterateButton = new JButton("Transliterate");
-        textfieldModernTunsi = new JTextArea("Transliteration will be shown here, when you hit the \"Transliterate Button\"");
+        textfieldModernTunsi = new JTextArea();
         textfieldModernTunsi.setFont(font);
         JScrollPane scrollTextFieldModernTunsi=new JScrollPane(textfieldModernTunsi);
         transliterateButton = new JButton("Transliterate");
@@ -94,7 +94,7 @@ public class TunsiAppWindow extends JFrame {
         this.getContentPane().add(transliterateButton);
         this.pack();
 
-        this.setTitle("Tunisian Transliteration");
+        this.setTitle("Tunisian Transliteration (© Dr. Meriem Akin 2020)");
         this.setBounds(xOrigin, yOrigin, widthTextFieldOldTunsi+yOrigin+gap,
                 (heightTextFieldOldTunsi+heightTextFieldModernTunsi+heightTransliterateButton+5*gap));
 
@@ -104,7 +104,7 @@ public class TunsiAppWindow extends JFrame {
     {
         TextTunsi text = new TextTunsi();
         text.setTextOldTunsi(textfieldOldTunsi.getText());
-        text.setTweetModernTunsi();
+        text.setTextModernTunsi();
         textfieldModernTunsi.setText(new String(text.getTextModernTunsi()));
     }
 

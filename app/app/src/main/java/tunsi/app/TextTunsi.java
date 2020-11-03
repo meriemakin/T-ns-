@@ -100,11 +100,25 @@ public class TextTunsi {
             if(count > 0 && posPreviousConsonant !=-1)
             {
                 previousConsonant = this.textOldTunsi[posPreviousConsonant];
-                harderLetters = (previousConsonant == '\u062D') || (previousConsonant == '\u062E') ||
-                        (previousConsonant == '\u0631') || (previousConsonant == '\u0635') ||
-                        (previousConsonant == '\u0636') || (previousConsonant == '\u0637') ||
-                        (previousConsonant == '\u0638') || (previousConsonant == '\u0639') ||
-                        (previousConsonant == '\u063A') || (previousConsonant == '\u0642') ;
+                if(posPreviousConsonant ==0)
+                {
+                    harderLetters = (previousConsonant == '\u062D') || (previousConsonant == '\u062E') ||
+                            (previousConsonant == '\u0631') || (previousConsonant == '\u0635') ||
+                            (previousConsonant == '\u0636') || (previousConsonant == '\u0637') ||
+                            (previousConsonant == '\u0638') || (previousConsonant == '\u0639') ||
+                            (previousConsonant == '\u063A') || (previousConsonant == '\u0642') ||
+                            (previousConsonant == '\u0632');
+                }
+                else
+                {
+                    harderLetters = (previousConsonant == '\u062D') || (previousConsonant == '\u062E')
+                            || (previousConsonant == '\u0635') ||
+                            (previousConsonant == '\u0636') || (previousConsonant == '\u0637') ||
+                            (previousConsonant == '\u0638') || (previousConsonant == '\u0639') ||
+                            (previousConsonant == '\u063A') || (previousConsonant == '\u0642') ||
+                            (previousConsonant == '\u0632');
+                }
+
             }
 
             if(currentCharacter=='\u064E' && count>0)
@@ -340,7 +354,7 @@ public class TextTunsi {
         }
         if(text.contains("aê"))
         {
-            text = text.replace("aê", "ê");
+            text = text.replace("aê", "â");
         }
         if(text.contains("eu"))
         {
@@ -377,6 +391,10 @@ public class TextTunsi {
             text = text.replace("oo","ô");
             text = text.replace("oô","ô");
             text = text.replace("ôo","ô");
+        }
+        if(text.contains("\uFFFD"))
+        {
+            text = text.replace("\uFFFD", "");
         }
         this.textModernTunsi = text.toCharArray();
     }

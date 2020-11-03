@@ -1,5 +1,6 @@
 package tunsi.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,28 @@ public class FirstFragment extends Fragment {
                 text.setTextOldTunsi(oldTunsiText);
                 text.setTextModernTunsi();
                 modernTunsiTextField.setText(java.nio.CharBuffer.wrap(text.getTextModernTunsi()));
-                System.out.println("Test");
+            }
+        });
+
+        view.findViewById(R.id.button_second).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextTunsi text = new TextTunsi();
+                //EditText oldTunsiTextField = (EditText)view.findViewById(R.id.textfieldOldTunsi);
+                String oldTunsiText = oldTunsiTextField.getText().toString();
+                text.setTextOldTunsi(oldTunsiText);
+                text.setTextModernTunsi();
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setType("text/plain");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"tunsi.app@gmail.com"});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Transliteration Bug Tûnsî");
+                String emailBody = "Old Tunisian:" + "\n";
+                emailBody += oldTunsiTextField.getText().toString();
+                emailBody += "\n" + "New Tunisian:" + "\n";
+                emailBody += modernTunsiTextField.getText().toString();
+                emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody);
+                startActivity(emailIntent);
+                System.out.println(modernTunsiTextField.getText().toString());
             }
         });
     }

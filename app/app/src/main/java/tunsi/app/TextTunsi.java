@@ -5,9 +5,9 @@ import java.util.Hashtable;
 /**
  * Open problems:
  * Solution for the harder letter, if there is no voyel after, e.g. Tbib, no differentiation between te and ta!
- * Make some "soft letters" hard with a, e.g. zazzar!
- * Some words are pronounced differently e.g. zeda and zazzar!
- * a with ê is an ê? with wich letters
+ * What happens to the very last character in the entire text? if nextCharacter = ' '. Check this case.
+ * Some words are pronounced differently e.g. zeda and zazzar! What to do here?
+ * a with ê is an ê? with which letters
  */
 public class TextTunsi {
 
@@ -88,7 +88,12 @@ public class TextTunsi {
         int countModernText = 0;
         for(int count = 0; count<this.textOldTunsi.length; count++)
         {
+            if(countModernText==174)
+            {
+                System.out.println("the word");
+            }
             char currentCharacter = this.textOldTunsi[count];
+            char nextCharacter = ' ';
             char previousConsonant;
             int posPreviousConsonant = searchConsonant(count);
             boolean harderLetters = false;
@@ -96,6 +101,10 @@ public class TextTunsi {
             if(count> 0)
             {
                 previousCharacter = this.textOldTunsi[count-1];
+            }
+            if(count<this.textOldTunsi.length-1)
+            {
+                nextCharacter = this.textOldTunsi[count+1];
             }
             if(count > 0 && posPreviousConsonant !=-1)
             {
@@ -161,17 +170,18 @@ public class TextTunsi {
             }
             else if(currentCharacter=='\u0651' && count>0)
             {
+                //problem here!!!
                 int consonant = searchConsonant(count);
                 if(consonant != -1)
                 {
                     if(consonant != (count-1))
                     {
                         this.textModernTunsi[countModernText]=this.textModernTunsi[countModernText-1];
-                        this.textModernTunsi[countModernText-1]=this.textModernTunsi[consonant];
+                        this.textModernTunsi[countModernText-1]=this.modernTunsiLetters.get(this.textOldTunsi[consonant]);
                     }
                     else
                     {
-                        this.textModernTunsi[countModernText]=this.textModernTunsi[consonant];
+                        this.textModernTunsi[countModernText]=this.modernTunsiLetters.get(this.textOldTunsi[consonant]);
                     }
 
                 }
@@ -192,7 +202,7 @@ public class TextTunsi {
                         if(harderLetters)
                         {
                             this.textModernTunsi[countModernText] = '\u0131';
-                            this.textModernTunsi = concatenate(this.textModernTunsi, 'î', count+1);
+                            this.textModernTunsi = concatenate(this.textModernTunsi, 'î', countModernText+1);
                             countModernText++;
                         }
                         else
@@ -216,7 +226,7 @@ public class TextTunsi {
                         if(harderLetters)
                         {
                             this.textModernTunsi[countModernText] = '\u0131';
-                            this.textModernTunsi = concatenate(this.textModernTunsi, 'î', count+1);
+                            this.textModernTunsi = concatenate(this.textModernTunsi, 'î', countModernText+1);
                             countModernText++;
                         }
                         else
@@ -290,7 +300,7 @@ public class TextTunsi {
                         if(harderLetters)
                         {
                             this.textModernTunsi[countModernText] = 'o';
-                            this.textModernTunsi = concatenate(this.textModernTunsi, 'u', count+1);
+                            this.textModernTunsi = concatenate(this.textModernTunsi, 'u', countModernText+1);
                             countModernText++;
                         }
                         else
@@ -305,7 +315,7 @@ public class TextTunsi {
                     if(harderLetters)
                     {
                         this.textModernTunsi[countModernText] = 'o';
-                        this.textModernTunsi = concatenate(this.textModernTunsi, 'u', count+1);
+                        this.textModernTunsi = concatenate(this.textModernTunsi, 'u', countModernText+1);
                         countModernText++;
                     }
                     else
@@ -320,6 +330,33 @@ public class TextTunsi {
                 else if(currentCharacter == '\u0629' && (count< this.textOldTunsi.length-1) && this.textOldTunsi[count+1] == '\u0652')
                 {
                     this.textModernTunsi[countModernText] = 't';
+                }
+                else if(currentCharacter == '\u0642' && nextCharacter != '\u064F' && nextCharacter != '\u064E' &&
+                        nextCharacter != '\u0652' && nextCharacter != '\u0650' &&
+                        nextCharacter != '\u0651' && nextCharacter != '\u0648' &&  nextCharacter != '\u064A' &&
+                        nextCharacter != '\u0627' && nextCharacter != '\u0649')
+                {
+                    this.textModernTunsi[countModernText] = this.modernTunsiLetters.get(currentCharacter);
+                    this.textModernTunsi = concatenate(this.textModernTunsi, '\u0258', countModernText+1);
+                    countModernText++;
+                }
+                else if(currentCharacter == '\u062D' && nextCharacter != '\u064F' && nextCharacter != '\u064E' &&
+                        nextCharacter != '\u0652' && nextCharacter != '\u0650' &&
+                        nextCharacter != '\u0651' && nextCharacter != '\u0648' &&  nextCharacter != '\u064A' &&
+                        nextCharacter != '\u0627' && nextCharacter != '\u0649')
+                {
+                    this.textModernTunsi[countModernText] = this.modernTunsiLetters.get(currentCharacter);
+                    this.textModernTunsi = concatenate(this.textModernTunsi, '\u0258', countModernText+1);
+                    countModernText++;
+                }
+                else if(currentCharacter == '\u0637' && nextCharacter != '\u064F' && nextCharacter != '\u064E' &&
+                        nextCharacter != '\u0652' && nextCharacter != '\u0650' &&
+                        nextCharacter != '\u0651' && nextCharacter != '\u0648' &&  nextCharacter != '\u064A' &&
+                        nextCharacter != '\u0627' && nextCharacter != '\u0649')
+                {
+                    this.textModernTunsi[countModernText] = this.modernTunsiLetters.get(currentCharacter);
+                    this.textModernTunsi = concatenate(this.textModernTunsi, '\u0258', countModernText+1);
+                    countModernText++;
                 }
                 else
                 {
@@ -347,6 +384,7 @@ public class TextTunsi {
             }
             countModernText++;
         }
+        System.out.println(new String(this.textModernTunsi));
         String text = new String(this.textModernTunsi);
         if(text.contains("  "))
         {
